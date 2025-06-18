@@ -20,10 +20,24 @@ class Combatant:
         return f"{self.name} ({self.hp}/{self.maxHp})"
     def Reset(self):
         self.hp = self.maxHp
+    def AttackAction(self, others):
+        for i in range(self.numberOfAttacks):
+            targets = list(sorted(list(filter(lambda c: c.hp>0 and c.team != self.team, others)), key=lambda c: c.hp))
+            if(len(targets)==0):
+                for c in others:
+                    c.endingHP+=[c.hp]
+                break
+            targets[0].hp -= self.Attack(targets[0])
+    def CleanUp(self):
+        for func in self.cleanUp:
+                func()
+    def TakeTurn(self, others):
+        self.AttackAction(others)
+        self.CleanUp()
 
 class RechargeCombatant(Combatant):
     def __init__(self, name, ac, hp, ModifierLambda, HitLambda, CritLambda, initiative, team, numberOfAttacks, rechargeCharges, rechargeRolls, rechargeDC):
-        Combatant.__init__(self, name, ac, hp, ModifierLambda, HitLambda, CritLambda, initiative, team, numberOfAttacks)
+        super().__init__(name, ac, hp, ModifierLambda, HitLambda, CritLambda, initiative, team, numberOfAttacks)
         self.recharge = rechargeCharges
         self.rechargeCharges = rechargeCharges
         self.rechargeRolls = rechargeRolls
@@ -35,9 +49,9 @@ class RechargeCombatant(Combatant):
                         self.recharge+=1
         self.cleanUp+=[RollRecharge]
     def Reset(self):
-        Combatant.Reset(self)
         self.recharge = self.rechargeCharges
-
+        return super().Reset()
+        
     
 def MakeAttackFunc(ModifierLambda,Hit,Crit):
     def NewFunc(target):
