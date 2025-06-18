@@ -1,5 +1,4 @@
-# from random import randint as R
-# from ...combatant import Combatant, MakeHit
+# from ...combatant import Combatant, MakeHit, R
 
 # class BrownBear(Combatant):
 #     def __init__(self):
