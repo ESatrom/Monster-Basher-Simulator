@@ -1,13 +1,16 @@
 from random import randint as R
-from Files.Combatants.Players.fighter import Fighter1Archer, Fighter2Archer
+from Files.Combatants.Players.fighter import Fighter1Archer, Fighter1Duelist, Fighter1Mauler, Fighter2Archer
 from Files.Combatants.Monsters.oldgrowthHunter import OldgrowthHunter1
+from Files.Combatants.BaseMonsters.ogrillon import Ogrillon
+from Files.Combatants.BaseMonsters.moorbounder import Moorbounder
+from Files.Combatants.BaseMonsters.animatedArmor import AnimatedArmor
 runs = 100000
 
-hunter = OldgrowthHunter1()
-p1 = Fighter2Archer()
-p2 = Fighter2Archer()
+hunter = Moorbounder("Moorbounder")
+p1 = OldgrowthHunter1("Oldgrowth")
+#p2 = Fighter1Mauler()
 
-combatants = [hunter, p1, p2]
+combatants = [hunter, p1]
 winningTeam = []
 playerDown = 0
 for sim in range(runs):

@@ -2,8 +2,8 @@ from random import randint as R
 from ...combatant import RechargeCombatant, MakeAttackFunc
 
 class OldgrowthHunter1(RechargeCombatant):
-    def __init__(self, team):
-        super().__init__("Oldgrowth Hunter (CR 1)", 16, 22, lambda r: r+R(1,4)+5, None, None, 3, team, 2, 1, 1, 5)
+    def __init__(self):
+        RechargeCombatant.__init__(self, "OldgrowthHunter1", 16, 22, lambda r: r+R(1,4)+5, None, None, 3, "Oldgrowth", 2, 1, 1, 5)
         def HunterStrike(DamageLambda):
             def Hit(target):
                 if(self.recharge and target.hp >= int(sum([DamageLambda()/32 in range(32)]))):
