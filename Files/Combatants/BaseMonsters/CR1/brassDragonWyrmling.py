@@ -5,13 +5,14 @@ class BrassDragonWyrmling(Combatant):
     def __init__(self, team):
         super().__init__("Brass Dragon Wyrmling", 16, 16, 3, team, [Attack("Bite", lambda r: r+4, MakeHit(lambda: R(1,10)+2), MakeHit(lambda: R(2,10)+2))])
         self.AddRecharge([RechargeAbility("Breath Weapons", 1, 1, 5)])
+        self.AddSaves(2, 2, 3, 0, 2, 3)
 
     def FireBreath(self, targets):
         self.rechargeAbilities["Breath Weapons"].charges -= 1
         shuffle(targets)
         dam = R(4,6)
         for t in targets[:2]:
-            if R(1,20)+2<11:#Dex save
+            if R(1,20)+t.dex<11:#Dex save
                 t.Damage(dam)
             else:
                 t.Damage(int(dam/2))
@@ -21,7 +22,7 @@ class BrassDragonWyrmling(Combatant):
         self.rechargeAbilities["Breath Weapons"].charges -= 1
         shuffle(targets)
         for t in targets[:2]:
-            if R(1,20)+2<11:#Con save
+            if R(1,20)+t.con<11:#Con save
                 t.paralyzed.add("On Damage")
 
     def Act(self, others):

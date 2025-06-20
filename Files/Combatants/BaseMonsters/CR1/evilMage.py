@@ -6,6 +6,7 @@ class EvilMage(Combatant):
         self.AddConcentration()
         self.ones = 4
         self.twos = 3
+        self.AddSaves(-1, 2, 0, 5, 3, 0)
 
     def MagicMissileDart(self, target):
         target.Damage(R(1,4)+1)
@@ -21,7 +22,7 @@ class EvilMage(Combatant):
             self.MagicMissileDart(targets[0])
             
     def HoldPerson(self, target):
-        if R(1,20)+1 < 13: #Wis save
+        if R(1,20)+target.wis < 13: #Wis save
             target.paralyzed.add("Hold Person")
             def clean():
                 if R(1,20)+1 >= 13:

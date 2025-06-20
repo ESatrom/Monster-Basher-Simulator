@@ -7,10 +7,11 @@ class OldgrowthShaman3(Combatant):
         self.AddRecharge([RechargeAbility("Poison Dart", 1, 1, 5)])
         self.drain = 1
         self.virulentMark = 2
+        self.AddSaves(3, 4, 3, 2, 2, 5)
         
     def PoisonDart(self, target):
         if self.AttackWith(target, self.attacks["Bone Dart"])>0: #damage was dealt = we scored a hit
-            if R(1,20)+2<12: #2 seems like a reasonable con save modifier
+            if R(1,20)+target.con<12: #2 seems like a reasonable con save modifier
                 target.poisoned.add("Oldgrowth Poison Dart")
                 def ClearPoison():
                     try:target.poisoned.remove("Oldgrowth Poison Dart")
@@ -21,7 +22,7 @@ class OldgrowthShaman3(Combatant):
 
     def Drain(self, target):
         self.drain -= 1
-        if R(1,20)+2 < 13: #Wis save
+        if R(1,20)+target.wis < 13: #Wis save
             target.effects["exhaustion"] = 2
             def clean():
                 target.effects["exhaustion"] += 2
@@ -42,7 +43,7 @@ class OldgrowthShaman3(Combatant):
     def VirulentMark(self, target):
         self.virulentMark -= 1
         if self.AttackWith(target, self.attacks["Mark"]) > 0: #Hit, attempt inflict
-            if R(1,20)+2 <13: #DC 13 Con save
+            if R(1,20)+target.con <13: #DC 13 Con save
                 target.poisoned.add("Virulent Mark")
         pass
 

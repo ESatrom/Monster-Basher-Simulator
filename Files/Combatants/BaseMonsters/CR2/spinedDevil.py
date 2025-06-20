@@ -8,6 +8,7 @@ class SpinedDevil(Combatant):
             ,Attack("Tail Spine", lambda r: r+4, MakeHit(lambda: R(1,4)+2), MakeHit(lambda: R(2,4)))
         ])
         self.spines = 12
+        self.AddSaves(0, 2, 1, 0, 2, -1)
 
     def Damage(self, amount):
         return super().Damage(int(amount/2))

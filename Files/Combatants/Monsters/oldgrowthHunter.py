@@ -4,6 +4,7 @@ class OldgrowthHunter1(Combatant):
     def __init__(self, team):
         super().__init__("Oldgrowth Hunter (CR 1)", 16, 27, 3, team, [Attack("Bone Dart", lambda r: r+R(1,4)+5, MakeHit(lambda: R(1,4)+3), MakeHit(lambda: R(2,4)+3))])
         self.AddRecharge([RechargeAbility("Poison Dart", 1, 1, 5),RechargeAbility("Bone Dart", 6, 2, 5)])
+        self.AddSaves(4, 5, 4, 2, 2, 2)
 
     def BoneDart(self, target):
         if self.rechargeAbilities["Bone Dart"].charges>0:
@@ -13,7 +14,7 @@ class OldgrowthHunter1(Combatant):
     def PoisonDart(self, target):
         if self.rechargeAbilities["Bone Dart"].charges>0:
             if self.Attack(target)>0: #damage was dealt = we scored a hit
-                if R(1,20)+2<12: #2 seems like a reasonable con save modifier
+                if R(1,20)+target.con<12: #2 seems like a reasonable con save modifier
                     target.poisoned.add("Oldgrowth Poison Dart")
                     def ClearPoison():
                         try:target.poisoned.remove("Oldgrowth Poison Dart")
@@ -39,6 +40,7 @@ class OldgrowthHunter2Slow(OldgrowthHunter1):
         self.ac = 16
         self.maxHp = 42
         self.rechargeAbilities["Bone Dart"].maxCharges = 8
+        self.AddSaves(4, 5, 4, 2, 2, 2)
 
 class OldgrowthHunter2Fast(OldgrowthHunter1):
     def __init__(self, team):
@@ -47,6 +49,7 @@ class OldgrowthHunter2Fast(OldgrowthHunter1):
         self.ac = 16
         self.maxHp = 36
         self.rechargeAbilities["Bone Dart"].maxCharges = 8
+        self.AddSaves(4, 5, 3, 2, 2, 2)
                 
     def Act(self, others):
         for i in range(3): #Multiattack (3)
@@ -65,6 +68,7 @@ class OldgrowthHunter2Fastest(OldgrowthHunter1):
         self.maxHp = 28
         self.rechargeAbilities["Bone Dart"].rolls = 3
         self.rechargeAbilities["Bone Dart"].maxCharges = 8
+        self.AddSaves(4, 5, 4, 2, 2, 2)
                 
     def Act(self, others):
         for i in range(3): #Multiattack (3)

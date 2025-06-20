@@ -24,6 +24,12 @@ class Combatant:
         self.paralyzed = set() #List of sources of the paralyzed condition (note, `Unconscious` is treated as paralyzed ("On Damage")
         self.effects = {}
         self.damageTriggers = []
+        self.str = 2
+        self.dex = 1
+        self.con = 2
+        self.int = -1
+        self.wis = 1
+        self.cha = -1
         
     def __str__(self):
         return f"{self.name} ({self.hp}/{self.maxHp})"
@@ -88,10 +94,18 @@ class Combatant:
     def AddConcentration(self):
         self.concentration = False
         def concentrationCheck(amount):
-            if R(1,20)+2<max(10,int(amount/2)):#con save
+            if R(1,20)+self.con<max(10,int(amount/2)):#con save
                 if self.concentration:self.concentration()
         self.damageTriggers += [concentrationCheck]
         pass
+
+    def AddSaves(self, str, dex, con, int, wis, cha):
+        self.str = str
+        self.dex = dex
+        self.con = con
+        self.int = int
+        self.wis = wis
+        self.cha = cha
 
 class RechargeAbility:
     def __init__(self, name, charges, rolls, DC):

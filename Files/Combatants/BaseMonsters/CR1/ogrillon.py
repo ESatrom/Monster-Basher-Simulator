@@ -7,6 +7,7 @@ class Ogrillon(Combatant):
             ,Attack("Battleaxe (2 hands)", lambda r: r+5, MakeHit(lambda: R(2,10)+3), MakeHit(lambda: R(4,10)+3))
             ,Attack("Javelin", lambda r: r+5, MakeHit(lambda: R(2,6)+3), MakeHit(lambda: R(4,6)+3))
         ])
+        self.AddSaves(3, 0, 2, -2, -1, 0)
 
     def Act(self, others): #The ogrillon has multiple options. Thankfully, if we're assuming everything is always in range, there's only one correct one
         targets = list(sorted(list(filter(lambda c: c.hp>0 and c.team != self.team, others)), key=lambda c: c.hp))
