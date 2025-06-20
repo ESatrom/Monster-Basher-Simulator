@@ -12,7 +12,7 @@ class Combatant:
         self.hp = hp
         self.maxHp = hp
         self.initiative = initiative #initiative modifier
-        self.team = team
+        self.team = name if team is None else team
         if len(attacks)==1: #If the creature has only 1 attack, set it as default
             self.attack = attacks[0]
         elif len(attacks)>1: #If it has more than one, log all of them
@@ -20,8 +20,10 @@ class Combatant:
         self.endingHP = [] #Array of ending health values to generate average end-of-combat hp.
         self.cleanUp = [] #List of functions to execute at end of turn
         self.oldCleanUp = [] #List of functions to remove from cleanup
-        self.poisoned = [] #List of sources of the poisoned condition
-        self.paralyzed = [] #List of sources of the paralyzed condition (note, `Unconscious` is treated as paralyzed ("On Damage")
+        self.poisoned = set() #List of sources of the poisoned condition
+        self.paralyzed = set() #List of sources of the paralyzed condition (note, `Unconscious` is treated as paralyzed ("On Damage")
+        self.effects = {}
+        self.damageTriggers = []
         
     def __str__(self):
         return f"{self.name} ({self.hp}/{self.maxHp})"
@@ -47,14 +49,9 @@ class Combatant:
     def Damage(self, amount):
         """Causes this combatant to take the specified amount of damage"""
         self.hp -= amount
+        for trigger in self.damageTriggers:trigger(amount)
         try:self.paralyzed.remove("On Damage") #generally used for asleep creatures
         except:pass
-
-    def Reset(self):
-        """Resets this combatant for the next combat - hp, recharge, limited use abilities, etc"""
-        self.hp = self.maxHp
-        self.poisoned = []
-        self.paralyzed = []
 
     def CleanUp(self):
         """Performs all end-of-turn cleanup functions assigned to this combatant"""
@@ -76,10 +73,8 @@ class Combatant:
         if not self.paralyzed:
             self.Act(others)
         self.CleanUp()
-
-class RechargeCombatant(Combatant):
-    def __init__(self, name, ac, hp, initiative, team, attacks, rechargeAbilities):
-        super().__init__(name, ac, hp, initiative, team, attacks)
+        
+    def AddRecharge(self, rechargeAbilities):
         self.rechargeAbilities = {recharge.name:recharge for recharge in rechargeAbilities}
         def RollRecharge():
             for ability in self.rechargeAbilities.values():
@@ -87,11 +82,16 @@ class RechargeCombatant(Combatant):
                     if ability.charges < ability.maxCharges:
                         if R(1,6)>=ability.DC:
                             ability.charges+=1
-        self.cleanUp+=[RollRecharge]
-    def Reset(self):
-        for ability in self.rechargeAbilities.values():
-            ability.charges = ability.maxCharges
-        return super().Reset()
+        if not RollRecharge in self.cleanUp:
+            self.cleanUp+=[RollRecharge]
+
+    def AddConcentration(self):
+        self.concentration = False
+        def concentrationCheck(amount):
+            if R(1,20)+2<max(10,int(amount/2)):#con save
+                if self.concentration:self.concentration()
+        self.damageTriggers += [concentrationCheck]
+        pass
 
 class RechargeAbility:
     def __init__(self, name, charges, rolls, DC):

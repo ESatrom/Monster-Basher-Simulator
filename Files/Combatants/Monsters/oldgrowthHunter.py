@@ -1,8 +1,9 @@
-from ...combatant import RechargeCombatant, R, RechargeAbility, Attack, MakeHit
+from ...combatant import Combatant, R, RechargeAbility, Attack, MakeHit
 
-class OldgrowthHunter1(RechargeCombatant):
+class OldgrowthHunter1(Combatant):
     def __init__(self, team):
-        super().__init__("Oldgrowth Hunter (CR 1)", 16, 22, 3, team, [Attack("Bone Dart", lambda r: r+R(1,4)+5, MakeHit(lambda: R(1,4)+3), MakeHit(lambda: R(2,4)+3))], [RechargeAbility("Poison Dart", 1, 1, 5),RechargeAbility("Bone Dart", 6, 2, 5)])
+        super().__init__("Oldgrowth Hunter (CR 1)", 16, 27, 3, team, [Attack("Bone Dart", lambda r: r+R(1,4)+5, MakeHit(lambda: R(1,4)+3), MakeHit(lambda: R(2,4)+3))])
+        self.AddRecharge([RechargeAbility("Poison Dart", 1, 1, 5),RechargeAbility("Bone Dart", 6, 2, 5)])
 
     def BoneDart(self, target):
         if self.rechargeAbilities["Bone Dart"].charges>0:
@@ -13,9 +14,9 @@ class OldgrowthHunter1(RechargeCombatant):
         if self.rechargeAbilities["Bone Dart"].charges>0:
             if self.Attack(target)>0: #damage was dealt = we scored a hit
                 if R(1,20)+2<12: #2 seems like a reasonable con save modifier
-                    target.poisoned += ["Oldgrowth Hunter Poison Dart"]
+                    target.poisoned.add("Oldgrowth Poison Dart")
                     def ClearPoison():
-                        try:target.poisoned.remove("Oldgrowth Hunter Poison Dart")
+                        try:target.poisoned.remove("Oldgrowth Poison Dart")
                         except:pass
                         target.oldCleanUp += [ClearPoison]
                     target.cleanUp += [ClearPoison]
@@ -24,6 +25,49 @@ class OldgrowthHunter1(RechargeCombatant):
                 
     def Act(self, others):
         for i in range(2): #Multiattack (2)
+            targets = list(sorted(list(filter(lambda c: c.hp>0 and c.team != self.team, others)), key=lambda c: c.hp))
+            if len(targets)>0:
+                if len(targets[0].poisoned)<1 and self.rechargeAbilities["Poison Dart"].charges>0:
+                    self.PoisonDart(targets[0])
+                else:
+                    self.BoneDart(targets[0])
+
+class OldgrowthHunter2Slow(OldgrowthHunter1):
+    def __init__(self, team):
+        super().__init__(team)
+        self.name = "Oldgrowth Hunter (CR2, slow)"
+        self.ac = 16
+        self.maxHp = 42
+        self.rechargeAbilities["Bone Dart"].maxCharges = 8
+
+class OldgrowthHunter2Fast(OldgrowthHunter1):
+    def __init__(self, team):
+        super().__init__(team)
+        self.name = "Oldgrowth Hunter (CR2, Fast)"
+        self.ac = 16
+        self.maxHp = 36
+        self.rechargeAbilities["Bone Dart"].maxCharges = 8
+                
+    def Act(self, others):
+        for i in range(3): #Multiattack (3)
+            targets = list(sorted(list(filter(lambda c: c.hp>0 and c.team != self.team, others)), key=lambda c: c.hp))
+            if len(targets)>0:
+                if len(targets[0].poisoned)<1 and self.rechargeAbilities["Poison Dart"].charges>0:
+                    self.PoisonDart(targets[0])
+                else:
+                    self.BoneDart(targets[0])
+
+class OldgrowthHunter2Fastest(OldgrowthHunter1):
+    def __init__(self, team):
+        super().__init__(team)
+        self.name = "Oldgrowth Hunter (CR2, Fastest)"
+        self.ac = 16
+        self.maxHp = 28
+        self.rechargeAbilities["Bone Dart"].rolls = 3
+        self.rechargeAbilities["Bone Dart"].maxCharges = 8
+                
+    def Act(self, others):
+        for i in range(3): #Multiattack (3)
             targets = list(sorted(list(filter(lambda c: c.hp>0 and c.team != self.team, others)), key=lambda c: c.hp))
             if len(targets)>0:
                 if len(targets[0].poisoned)<1 and self.rechargeAbilities["Poison Dart"].charges>0:

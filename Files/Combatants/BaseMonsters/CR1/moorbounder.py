@@ -1,4 +1,4 @@
-from ...combatant import Combatant, MakeHit, Attack, R
+from ....combatant import Combatant, MakeHit, Attack, R
 
 class Moorbounder(Combatant):
     def __init__(self, team):

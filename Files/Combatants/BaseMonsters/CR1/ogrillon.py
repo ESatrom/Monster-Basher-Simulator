@@ -1,4 +1,4 @@
-from ...combatant import Combatant, MakeHit, Attack, R
+from ....combatant import Combatant, MakeHit, Attack, R
 
 class Ogrillon(Combatant):
     def __init__(self, team):
@@ -11,4 +11,4 @@ class Ogrillon(Combatant):
     def Act(self, others): #The ogrillon has multiple options. Thankfully, if we're assuming everything is always in range, there's only one correct one
         targets = list(sorted(list(filter(lambda c: c.hp>0 and c.team != self.team, others)), key=lambda c: c.hp))
         if len(targets)>0:
-            self.attacks["Battleaxe (2 hands)"](targets[0])
+            self.AttackWith(targets[0], self.attacks["Battleaxe (2 hands)"])
