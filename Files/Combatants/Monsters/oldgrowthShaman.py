@@ -11,6 +11,9 @@ class OldgrowthShaman3(Combatant):
         self.AddSaveProf(Stat.WISDOM)
         self.AddSaveProf(Stat.CHARISMA)
         
+    def RollSave(self, stat, advantage=False, disadvantage=False):
+        return super().RollSave(stat, advantage, disadvantage) + R(1,4)
+        
     def PoisonDart(self, target):
         if self.AttackWith(target, self.attacks["Bone Dart"])>0: #damage was dealt = we scored a hit
             if R(1,20)+target.con<12: #2 seems like a reasonable con save modifier

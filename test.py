@@ -38,7 +38,10 @@ sets = [
     [Fighter2Archer, Fighter1Duelist],
     [Fighter2Duelist, Fighter1Duelist],
     [Fighter2Flow, Fighter1Duelist],
-    [Fighter2Mauler, Fighter1Duelist]
+    [Fighter2Mauler, Fighter1Duelist],
+    [Ettercap, OldgrowthHunter1],
+    [CarrionCrawler, OldgrowthHunter1],
+    [EvilMage, OldgrowthHunter1]
 ]
 
 for s in sets:

@@ -7,6 +7,9 @@ class OldgrowthHunter1(Combatant):
         self.AddStats(14, 16, 15, 10, 10, 10)
         self.AddSaveProf(Stat.DEXTERITY)
         self.AddSaveProf(Stat.STRENGTH)
+        
+    def RollSave(self, stat, advantage=False, disadvantage=False):
+        return super().RollSave(stat, advantage, disadvantage) + R(1,4)
 
     def BoneDart(self, target):
         if self.rechargeAbilities["Bone Dart"].charges>0:
