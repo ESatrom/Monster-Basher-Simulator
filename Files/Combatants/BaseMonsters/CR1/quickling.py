@@ -2,9 +2,9 @@ from ....combatant import Combatant, MakeHit, R, Attack
 
 class Quickling(Combatant):
     def __init__(self, team):
-        super().__init__("Quickling", 16+6, 10, 6, team, [Attack("Dagger",lambda r: r+8, MakeHit(lambda: R(1,4)+6), MakeHit(lambda: R(2,4)+6))])
+        super().__init__("Quickling", 16+6, 10, 1, team, [Attack("Dagger",lambda r: r+8, MakeHit(lambda: R(1,4)+6), MakeHit(lambda: R(2,4)+6))])
         #Increased AC to simulate Blurred Movement.
-        self.AddSaves(-3, 6, 1, 0, 1, -2)
+        self.AddStats(4, 23, 13, 10, 12, 7)
         
     def Act(self, others):
         for i in range(3): #Multiattack (3)

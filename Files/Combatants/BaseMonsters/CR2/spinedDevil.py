@@ -2,13 +2,13 @@ from ....combatant import Combatant, MakeHit, Attack, R
 
 class SpinedDevil(Combatant):
     def __init__(self, team):
-        super().__init__("Spined Devil", 13, 22, -1, team, [
+        super().__init__("Spined Devil", 13, 22, 2, team, [
             Attack("Bite", lambda r: r+2, MakeHit(lambda: R(2,4)), MakeHit(lambda: R(4,4)))
             ,Attack("Fork", lambda r: r+2, MakeHit(lambda: R(1,6)), MakeHit(lambda: R(2,6)))
             ,Attack("Tail Spine", lambda r: r+4, MakeHit(lambda: R(1,4)+2), MakeHit(lambda: R(2,4)))
         ])
         self.spines = 12
-        self.AddSaves(0, 2, 1, 0, 2, -1)
+        self.AddStats(10, 15, 12, 11, 14, 8)
 
     def Damage(self, amount):
         return super().Damage(int(amount/2))

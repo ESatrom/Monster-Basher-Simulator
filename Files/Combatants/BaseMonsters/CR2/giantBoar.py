@@ -2,10 +2,10 @@ from ....combatant import Combatant, MakeHit, R, Attack
 
 class GiantBoar(Combatant):
     def __init__(self, team):
-        super().__init__("Giant Boar", 12, 42, 0, team, [Attack("Tusk",lambda r: r+5, MakeHit(lambda: R(2,6)+3), MakeHit(lambda: R(4,6)+3)), Attack("Charge",lambda r: r+5, MakeHit(lambda: R(4,6)+3), MakeHit(lambda: R(8,6)+3))])
+        super().__init__("Giant Boar", 12, 42, 2, team, [Attack("Tusk",lambda r: r+5, MakeHit(lambda: R(2,6)+3), MakeHit(lambda: R(4,6)+3)), Attack("Charge",lambda r: r+5, MakeHit(lambda: R(4,6)+3), MakeHit(lambda: R(8,6)+3))])
         self.relentless = 1
         self.charge = 1
-        self.AddSaves(3, 0, 3, -4, -2, -3)
+        self.AddStats(17, 10, 16, 2, 7, 5)
 
     def Damage(self, amount):
         if amount <= 10 and self.hp <= amount and self.relentless:

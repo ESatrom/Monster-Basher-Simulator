@@ -2,8 +2,8 @@ from ....combatant import Combatant, Attack, MakeHit, R
 
 class Ghoul(Combatant):
     def __init__(self, team):
-        super().__init__("Ghoul", 12, 22, 2, team, [Attack("Bite", lambda r: r+2, MakeHit(lambda: R(2,6)+2), MakeHit(lambda: R(4,6)+2)), Attack("Claws", lambda r: r+4, MakeHit(lambda: R(2,4)+2), MakeHit(lambda: R(4,4)+2))])
-        self.AddSaves(1, 2, 0, -2, 0, -2)
+        super().__init__("Ghoul", 12, 22, 1, team, [Attack("Bite", lambda r: r+2, MakeHit(lambda: R(2,6)+2), MakeHit(lambda: R(4,6)+2)), Attack("Claws", lambda r: r+4, MakeHit(lambda: R(2,4)+2), MakeHit(lambda: R(4,4)+2))])
+        self.AddStats(13, 15, 10, 7, 10, 6)
         
     def Act(self, others):
         targets = list(sorted(list(filter(lambda c: c.hp>0 and c.team != self.team, others)), key=lambda c: c.hp))

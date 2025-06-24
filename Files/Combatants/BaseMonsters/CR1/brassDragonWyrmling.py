@@ -1,11 +1,15 @@
-from ....combatant import Combatant, Attack, MakeHit, R, RechargeAbility
+from ....combatant import Combatant, Attack, MakeHit, R, RechargeAbility, Stat
 from random import shuffle
 
 class BrassDragonWyrmling(Combatant):
     def __init__(self, team):
-        super().__init__("Brass Dragon Wyrmling", 16, 16, 3, team, [Attack("Bite", lambda r: r+4, MakeHit(lambda: R(1,10)+2), MakeHit(lambda: R(2,10)+2))])
+        super().__init__("Brass Dragon Wyrmling", 16, 16, 1, team, [Attack("Bite", lambda r: r+4, MakeHit(lambda: R(1,10)+2), MakeHit(lambda: R(2,10)+2))])
         self.AddRecharge([RechargeAbility("Breath Weapons", 1, 1, 5)])
-        self.AddSaves(2, 2, 3, 0, 2, 3)
+        self.AddStats(15, 10, 13, 10, 11, 13)
+        self.AddSaveProf(Stat.DEXTERITY)
+        self.AddSaveProf(Stat.CONSTITUTION)
+        self.AddSaveProf(Stat.WISDOM)
+        self.AddSaveProf(Stat.CHARISMA)
 
     def FireBreath(self, targets):
         self.rechargeAbilities["Breath Weapons"].charges -= 1

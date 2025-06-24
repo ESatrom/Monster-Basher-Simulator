@@ -1,2 +1,2 @@
-from oldgrowthHunter import *
-from oldgrowthShaman import *
+from .oldgrowthHunter import *
+from .oldgrowthShaman import *

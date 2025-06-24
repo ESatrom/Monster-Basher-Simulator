@@ -1,4 +1,6 @@
 from random import randint
+from enum import Enum
+import math
 
 def R(numDice, step):
     """rolls <numDice>d<step>"""
@@ -6,12 +8,13 @@ def R(numDice, step):
 
 class Combatant:
     """A combatant, be it a PC, monster, etc"""
-    def __init__(self, name, ac, hp, initiative, team, attacks):
+    def __init__(self, name, ac, hp, cr, team, attacks):
         self.name = name
         self.ac = ac
         self.hp = hp
         self.maxHp = hp
-        self.initiative = initiative #initiative modifier
+        self.cr = cr
+        def GetProf(self):return min(2,math.ceil(self.cr / 4)+1)
         self.team = name if team is None else team
         if len(attacks)==1: #If the creature has only 1 attack, set it as default
             self.attack = attacks[0]
@@ -24,12 +27,13 @@ class Combatant:
         self.paralyzed = set() #List of sources of the paralyzed condition (note, `Unconscious` is treated as paralyzed ("On Damage")
         self.effects = {}
         self.damageTriggers = []
-        self.str = 2
-        self.dex = 1
-        self.con = 2
-        self.int = -1
-        self.wis = 1
-        self.cha = -1
+        self.str = 10
+        self.dex = 10
+        self.con = 10
+        self.int = 10
+        self.wis = 10
+        self.cha = 10
+        self.saveProficiencies = []
         
     def __str__(self):
         return f"{self.name} ({self.hp}/{self.maxHp})"
@@ -99,13 +103,47 @@ class Combatant:
         self.damageTriggers += [concentrationCheck]
         pass
 
-    def AddSaves(self, str, dex, con, int, wis, cha):
+    def AddStats(self, str, dex, con, int, wis, cha):
         self.str = str
         self.dex = dex
         self.con = con
         self.int = int
         self.wis = wis
         self.cha = cha
+
+    def AddSaveProf(self, stat):
+        self.saveProficiencies += [stat]
+
+    def GetMod(self, stat):
+        match stat:
+            case Stat.STRENGTH:
+                return (self.str-10)//2
+            case Stat.CONSTITUTION:
+                return (self.con-10)//2
+            case Stat.DEXTERITY:
+                return (self.dex-10)//2
+            case Stat.INTELLIGENCE:
+                return (self.int-10)//2
+            case Stat.WISDOM:
+                return (self.wis-10)//2
+            case Stat.CHARISMA:
+                return (self.cha-10)//2
+
+    def Roll(self, stat, advantage=False, disadvantage=False):
+        if advantage and not disadvantage:return max(R(1,20),R(1,20))+self.GetMod(stat)
+        elif disadvantage:return min(R(1,20),R(1,20))+self.GetMod(stat)
+        else:return R(1,20)+self.GetMod(stat)
+    
+    def RollSave(self, stat, advantage=False, disadvantage=False):
+        return self.Roll(stat, advantage, disadvantage) + self.GetProf() * self.saveProficiencies.count(stat)
+
+class Stat(Enum):
+    STRENGTH = 1
+    DEXTERITY = 2
+    CONSTITUTION = 3
+    INTELLIGENCE = 4
+    WISDOM = 5
+    CHARISMA = 6
 
 class RechargeAbility:
     def __init__(self, name, charges, rolls, DC):

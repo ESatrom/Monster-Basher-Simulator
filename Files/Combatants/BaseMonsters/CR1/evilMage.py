@@ -1,12 +1,14 @@
-from ....combatant import Combatant, Attack, MakeHit, R
+from ....combatant import Combatant, Attack, MakeHit, R, Stat
 
 class EvilMage(Combatant):
     def __init__(self, team):
-        super().__init__("Evil Mage", 12, 22, 2, team, [Attack("Shocking Grasp", lambda r: r+5, MakeHit(lambda: R(1,8)), MakeHit(lambda: R(2,8))), Attack("Quarterstaff", lambda r: r+1, MakeHit(lambda: R(1,8)-1), MakeHit(lambda: R(2,8)-1))])
+        super().__init__("Evil Mage", 12, 22, 1, team, [Attack("Shocking Grasp", lambda r: r+5, MakeHit(lambda: R(1,8)), MakeHit(lambda: R(2,8))), Attack("Quarterstaff", lambda r: r+1, MakeHit(lambda: R(1,8)-1), MakeHit(lambda: R(2,8)-1))])
         self.AddConcentration()
         self.ones = 4
         self.twos = 3
-        self.AddSaves(-1, 2, 0, 5, 3, 0)
+        self.AddStats(9, 14, 11, 17, 12, 11)
+        self.AddSaveProf(Stat.INTELLIGENCE)
+        self.AddSaveProf(Stat.WISDOM)
 
     def MagicMissileDart(self, target):
         target.Damage(R(1,4)+1)

@@ -2,8 +2,8 @@ from ....combatant import Combatant, MakeHit, Attack, R
 
 class AnimatedArmor(Combatant):
     def __init__(self, team):
-        super().__init__("Animated Armor", 18, 33, 0, team, [Attack("Slam", lambda r: r+4, MakeHit(lambda: R(1,6)+2), MakeHit(lambda: R(2,6)+2))])
-        self.AddSaves(2, 0, 1, -5, -4, -5)
+        super().__init__("Animated Armor", 18, 33, 1, team, [Attack("Slam", lambda r: r+4, MakeHit(lambda: R(1,6)+2), MakeHit(lambda: R(2,6)+2))])
+        self.AddStats(14, 11, 13, 1, 3, 1)
 
     def Act(self, others):
         for i in range(2): #Multiattack (2)

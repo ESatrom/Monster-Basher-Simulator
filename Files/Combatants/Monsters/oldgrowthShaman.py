@@ -1,13 +1,15 @@
-from ...combatant import Combatant, R, RechargeAbility, Attack, MakeHit
+from ...combatant import Combatant, R, RechargeAbility, Attack, MakeHit, Stat
 
 class OldgrowthShaman3(Combatant):
     def __init__(self, team):
-        super().__init__("Oldgrowth Shaman (CR 3)", 15, 44, 2, team, [Attack("Bone Dart", lambda r: r+R(1,4)+4, MakeHit(lambda: R(1,4)+2), MakeHit(lambda: R(2,4)+2)), Attack("Black Bolt", lambda r: r+R(1,4)+5, MakeHit(lambda: R(4,6)), MakeHit(lambda: R(8,6))), Attack("Mark", lambda r: r+R(1,4)+5, MakeHit(lambda: R(1,4)), MakeHit(lambda: R(2,4)))])
+        super().__init__("Oldgrowth Shaman (CR 3)", 15, 44, 3, team, [Attack("Bone Dart", lambda r: r+R(1,4)+4, MakeHit(lambda: R(1,4)+2), MakeHit(lambda: R(2,4)+2)), Attack("Black Bolt", lambda r: r+R(1,4)+5, MakeHit(lambda: R(4,6)), MakeHit(lambda: R(8,6))), Attack("Mark", lambda r: r+R(1,4)+5, MakeHit(lambda: R(1,4)), MakeHit(lambda: R(2,4)))])
         self.AddConcentration()
         self.AddRecharge([RechargeAbility("Poison Dart", 1, 1, 5)])
         self.drain = 1
         self.virulentMark = 2
-        self.AddSaves(3, 4, 3, 2, 2, 5)
+        self.AddStats(12, 14, 13, 10, 10, 16)
+        self.AddSaveProf(Stat.WISDOM)
+        self.AddSaveProf(Stat.CHARISMA)
         
     def PoisonDart(self, target):
         if self.AttackWith(target, self.attacks["Bone Dart"])>0: #damage was dealt = we scored a hit

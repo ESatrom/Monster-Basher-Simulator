@@ -3,7 +3,7 @@ from ....combatant import Combatant, MakeHit, R, Attack
 class Ettercap(Combatant):
     def __init__(self, team):
         super().__init__("Ettercap", 13, 44, 2, team, [Attack("Bite",lambda r: r+4, MakeHit(lambda: R(1,8)+R(1,8)+2), MakeHit(lambda: R(2,8)+R(2,8)+2)), Attack("Claws",lambda r: r+4, MakeHit(lambda: R(2,4)+2), MakeHit(lambda: R(4,4)+2))])
-        self.AddSaves(2, 2, 1, -2, 1, -1)
+        self.AddStats(14, 15, 13, 7, 12, 8)
 
     def Act(self, others):
         for atk in ["Claws", "Bite"]:

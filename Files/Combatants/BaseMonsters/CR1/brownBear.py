@@ -2,8 +2,8 @@ from ....combatant import Combatant, MakeHit, R, Attack
 
 class BrownBear(Combatant):
     def __init__(self, team):
-        super().__init__("Brown Bear", 11, 34, 0, team, [Attack("Bite",lambda r: r+6, MakeHit(lambda: R(1,8)+4), MakeHit(lambda: R(2,8)+4)), Attack("Claws",lambda r: r+6, MakeHit(lambda: R(2,6)+4), MakeHit(lambda: R(4,6)+4))])
-        self.AddSaves(4, 0, 3, -4, 1, -2)
+        super().__init__("Brown Bear", 11, 34, 1, team, [Attack("Bite",lambda r: r+6, MakeHit(lambda: R(1,8)+4), MakeHit(lambda: R(2,8)+4)), Attack("Claws",lambda r: r+6, MakeHit(lambda: R(2,6)+4), MakeHit(lambda: R(4,6)+4))])
+        self.AddStats(19, 10, 16, 2, 13, 7)
 
     def Act(self, others):
         for atk in ["Claws", "Bite"]:

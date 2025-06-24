@@ -5,10 +5,40 @@ from Files.Combatants.BaseMonsters.all import *
 
 
 
-runs = 100000
-
+runs = 100
+# Populate sets with every single combatant in a single match-up. This can be run to ensure there are no errors in combatant code.
 sets = [
-    [FlyingSnake, FlyingSnake, Fighter1Duelist]
+    [FlyingSnake, Fighter1Duelist],
+    [AnimatedArmor, Fighter1Duelist],
+    [BrassDragonWyrmling, Fighter1Duelist],
+    [BrownBear, Fighter1Duelist],
+    [EvilMage, Fighter1Duelist],
+    [Ghoul, Fighter1Duelist],
+    [Moorbounder, Fighter1Duelist],
+    [Ogrillon, Fighter1Duelist],
+    [Quickling, Fighter1Duelist],
+    [Allosaurus, Fighter1Duelist],
+    [BlackDragonWyrmling, Fighter1Duelist],
+    [CarrionCrawler, Fighter1Duelist],
+    [Ettercap, Fighter1Duelist],
+    [Gargoyle, Fighter1Duelist],
+    [GiantBoar, Fighter1Duelist],
+    [Ogre, Fighter1Duelist],
+    [PolarBear, Fighter1Duelist],
+    [SharkbodyAbomination, Fighter1Duelist],
+    [SpinedDevil, Fighter1Duelist],
+    [OldgrowthHunter1, Fighter1Duelist],
+    [OldgrowthHunter2Slow, Fighter1Duelist],
+    [OldgrowthHunter2Fast, Fighter1Duelist],
+    [OldgrowthHunter2Fastest, Fighter1Duelist],
+    [OldgrowthShaman3, Fighter1Duelist],
+    [Fighter1Archer, Fighter1Duelist],
+    [Fighter1Flow, Fighter1Duelist],
+    [Fighter1Mauler, Fighter1Duelist],
+    [Fighter2Archer, Fighter1Duelist],
+    [Fighter2Duelist, Fighter1Duelist],
+    [Fighter2Flow, Fighter1Duelist],
+    [Fighter2Mauler, Fighter1Duelist]
 ]
 
 for s in sets:
