@@ -1,12 +1,9 @@
-from ....combatant import Combatant, MakeHit, Attack, R
+from ....combatant import *
 
 class AnimatedArmor(Combatant):
-    def __init__(self, team):
-        super().__init__("Animated Armor", 18, 33, 1, team, [Attack("Slam", lambda r: r+4, MakeHit(lambda: R(1,6)+2), MakeHit(lambda: R(2,6)+2))])
+    def __init__(self, team:str):
+        super().__init__("Animated Armor", 18, 33, 1, team, Attack("Slam", 4, MakeHit((1,6,2,DamageType.BLUDGEONING))))
         self.AddStats(14, 11, 13, 1, 3, 1)
-
-    def Act(self, others):
-        for i in range(2): #Multiattack (2)
-            targets = list(sorted(list(filter(lambda c: c.hp>0 and c.team != self.team, others)), key=lambda c: c.hp))
-            if len(targets)>0:
-                self.Attack(targets[0])
+        self.multiattack = ["Slam","Slam"]
+        self.immunities += [DamageType.POISON, DamageType.PSYCHIC]
+        self.conditionImmunities += [ConditionConstant.BLINDED, ConditionConstant.CHARMED, ConditionConstant.DEAFENED, ConditionConstant.EXHAUSTION, ConditionConstant.FRIGHTENED, ConditionConstant.PARALYZED, ConditionConstant.PETRIFIED, ConditionConstant.POISONED]

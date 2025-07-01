@@ -1,12 +1,7 @@
-from ....combatant import Combatant, MakeHit, R, Attack
+from ....combatant import *
 
 class BrownBear(Combatant):
-    def __init__(self, team):
-        super().__init__("Brown Bear", 11, 34, 1, team, [Attack("Bite",lambda r: r+6, MakeHit(lambda: R(1,8)+4), MakeHit(lambda: R(2,8)+4)), Attack("Claws",lambda r: r+6, MakeHit(lambda: R(2,6)+4), MakeHit(lambda: R(4,6)+4))])
+    def __init__(self, team:str):
+        super().__init__("Brown Bear", 11, 34, 1, team, [Attack("Bite", 6, MakeHit((1,8,4,DamageType.PIERCING))), Attack("Claws", 6, MakeHit((2,6,4,DamageType.SLASHING)))])
         self.AddStats(19, 10, 16, 2, 13, 7)
-
-    def Act(self, others):
-        for atk in ["Claws", "Bite"]:
-            targets = list(sorted(list(filter(lambda c: c.hp>0 and c.team != self.team, others)), key=lambda c: c.hp))
-            if len(targets)>0:
-                self.AttackWith(targets[0], self.attacks[atk])
+        self.multiattack = ["Claws", "Bite"]

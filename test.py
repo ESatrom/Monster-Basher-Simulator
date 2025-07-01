@@ -27,6 +27,7 @@ sets = [
     [PolarBear, Fighter1Duelist],
     [SharkbodyAbomination, Fighter1Duelist],
     [SpinedDevil, Fighter1Duelist],
+    [Ankylosaurus, Fighter1Duelist],
     [OldgrowthHunter1, Fighter1Duelist],
     [OldgrowthHunter2Slow, Fighter1Duelist],
     [OldgrowthHunter2Fast, Fighter1Duelist],

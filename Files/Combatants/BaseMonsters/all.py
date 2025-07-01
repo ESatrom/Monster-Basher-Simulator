@@ -16,4 +16,5 @@ from .CR2.ogre import *
 from .CR2.polarBear import *
 from .CR2.sharkbodyAbomination import *
 from .CR2.spinedDevil import *
+from .CR3.ankylosaurus import *
 from .flyingSnake import *

@@ -1,13 +1,13 @@
-from ....combatant import Combatant, MakeHit, R, Attack
+from ....combatant import *
 
 class Quickling(Combatant):
-    def __init__(self, team):
-        super().__init__("Quickling", 16+6, 10, 1, team, [Attack("Dagger",lambda r: r+8, MakeHit(lambda: R(1,4)+6), MakeHit(lambda: R(2,4)+6))])
+    def __init__(self, team:str):
+        super().__init__("Quickling", 16, 10, 1, team, Attack("Dagger", 8, MakeHit((1,4,6,DamageType.PIERCING))))
         #Increased AC to simulate Blurred Movement.
         self.AddStats(4, 23, 13, 10, 12, 7)
+        self.multiattack = ["Dagger","Dagger","Dagger"]
         
-    def Act(self, others):
-        for i in range(3): #Multiattack (3)
-            targets = list(sorted(list(filter(lambda c: c.hp>0 and c.team != self.team, others)), key=lambda c: c.hp))
-            if len(targets)>0:
-                self.Attack(targets[0])
+    def AttackedDisadvantage(self):
+        result = super().AttackedDisadvantage()
+        result |= self.GetSpeed() > 0
+        return result
